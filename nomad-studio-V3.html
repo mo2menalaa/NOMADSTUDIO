@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nomad Studio — Premium CGI & AI Visual Production</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #0e0d0b;
+    --paper: #f5f2ec;
+    --dust: #c8b89a;
+    --rust: #b84b2a;
+    --sand: #e8e0d0;
+    --grey: #6b6560;
+    --charcoal: #2a2520;
+    --cream: #faf8f4;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    color: var(--paper);
+    overflow-x: hidden;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── CURSOR ── */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--rust);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(200,184,154,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    mix-blend-mode: normal;
+    transition: padding 0.4s ease;
+  }
+  nav.scrolled { padding: 18px 48px; background: rgba(14,13,11,0.85); backdrop-filter: blur(12px); }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--rust); }
+
+  .nav-links {
+    display: flex; gap: 40px; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--dust);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -2px; left: 0; right: 0;
+    height: 1px; background: var(--rust);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--paper); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--rust); color: var(--paper);
+    border: none; padding: 10px 22px;
+    cursor: pointer; text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+  }
+  .nav-cta:hover { background: #9a3d22; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 0 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(184,75,42,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 20% 80%, rgba(200,184,154,0.05) 0%, transparent 50%);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(200,184,154,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,184,154,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 120px;
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--rust);
+    margin-bottom: 32px;
+    display: flex; align-items: center; gap: 16px;
+    opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 32px; height: 1px; background: var(--rust);
+  }
+
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(56px, 8vw, 110px);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    margin-bottom: 40px;
+  }
+  .hero-headline em {
+    font-style: italic;
+    color: var(--dust);
+  }
+  .hero-headline .accent { color: var(--rust); }
+
+  .hero-headline .line { overflow: hidden; }
+  .hero-headline .line span {
+    display: block;
+    opacity: 0;
+    transform: translateY(100%);
+    animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-headline .line:nth-child(1) span { animation-delay: 0.3s; }
+  .hero-headline .line:nth-child(2) span { animation-delay: 0.45s; }
+  .hero-headline .line:nth-child(3) span { animation-delay: 0.6s; }
+
+  .hero-sub {
+    font-size: 17px; font-weight: 300;
+    color: var(--grey); line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 56px;
+    opacity: 0; animation: fadeUp 0.8s ease 0.85s forwards;
+  }
+
+  .hero-actions {
+    display: flex; gap: 20px; align-items: center;
+    opacity: 0; animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  .btn-primary {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--rust); color: var(--paper);
+    padding: 16px 36px; text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease, transform 0.2s ease;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.1);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+  }
+  .btn-primary:hover::after { transform: translateX(0); }
+  .btn-primary:hover { transform: translateY(-2px); }
+
+  .btn-secondary {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dust); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+    transition: color 0.3s ease;
+  }
+  .btn-secondary svg { transition: transform 0.3s ease; }
+  .btn-secondary:hover { color: var(--paper); }
+  .btn-secondary:hover svg { transform: translateX(4px); }
+
+  .hero-bottom {
+    padding-bottom: 48px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    position: relative; z-index: 2;
+    border-top: 1px solid rgba(200,184,154,0.1);
+    padding-top: 24px;
+    opacity: 0; animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 300;
+    color: var(--paper); line-height: 1;
+  }
+  .hero-stat .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--grey);
+    margin-top: 6px;
+  }
+
+  .hero-scroll {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .hero-scroll span {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--grey);
+    writing-mode: vertical-rl;
+  }
+  .scroll-line {
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--rust), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-section {
+    border-top: 1px solid rgba(200,184,154,0.1);
+    border-bottom: 1px solid rgba(200,184,154,0.1);
+    padding: 18px 0;
+    overflow: hidden;
+    background: rgba(200,184,154,0.03);
+  }
+  .marquee-track {
+    display: flex; gap: 0;
+    animation: marquee 28s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    display: flex; align-items: center; gap: 48px;
+    padding: 0 48px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--grey);
+    white-space: nowrap;
+  }
+  .marquee-item .dot {
+    width: 4px; height: 4px;
+    background: var(--rust); border-radius: 50%;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 120px 48px; }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--rust);
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .section-label::before {
+    content: ''; width: 24px; height: 1px; background: var(--rust);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 300; line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+    margin-bottom: 24px;
+  }
+  .section-title em { font-style: italic; color: var(--dust); }
+
+  /* ── ABOUT ── */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+
+  .about-visual {
+    position: relative;
+    aspect-ratio: 3/4;
+    background: var(--charcoal);
+    overflow: hidden;
+  }
+
+  .about-visual-inner {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(135deg, rgba(184,75,42,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 30% 70%, rgba(200,184,154,0.1) 0%, transparent 60%);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .about-visual-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px; font-weight: 300;
+    color: rgba(200,184,154,0.06);
+    letter-spacing: -0.05em;
+    line-height: 1;
+    text-align: center;
+    user-select: none;
+  }
+
+  .about-visual-label {
+    position: absolute; bottom: 24px; left: 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--dust);
+  }
+
+  .about-visual-accent {
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 80px;
+    background: var(--rust);
+  }
+
+  .about-text .section-title { margin-bottom: 32px; }
+
+  .about-body {
+    font-size: 16px; font-weight: 300;
+    color: var(--grey); line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .about-list {
+    list-style: none;
+    margin: 40px 0;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .about-list li {
+    display: flex; align-items: center; gap: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px; letter-spacing: 0.08em;
+    color: var(--dust);
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(200,184,154,0.08);
+  }
+  .about-list li::before {
+    content: '→';
+    color: var(--rust); flex-shrink: 0;
+  }
+
+  /* ── WORK / SERVICES ── */
+  #services {
+    background: var(--charcoal);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 80px;
+    background: rgba(200,184,154,0.08);
+  }
+
+  .service-card {
+    background: var(--charcoal);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s ease;
+    cursor: default;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--rust);
+    transition: height 0.4s ease;
+  }
+  .service-card:hover { background: #1e1b18; }
+  .service-card:hover::before { height: 100%; }
+
+  .service-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px; font-weight: 300;
+    color: rgba(200,184,154,0.06);
+    line-height: 1;
+    margin-bottom: 24px;
+    transition: color 0.4s ease;
+  }
+  .service-card:hover .service-num { color: rgba(184,75,42,0.15); }
+
+  .service-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 400;
+    color: var(--paper);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .service-desc {
+    font-size: 14px; font-weight: 300;
+    color: var(--grey); line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .service-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .service-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dust);
+    border: 1px solid rgba(200,184,154,0.2);
+    padding: 4px 10px;
+  }
+
+  /* ── PROCESS ── */
+  #process {
+    background: var(--ink);
+  }
+
+  .process-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: end;
+    margin-bottom: 80px;
+  }
+
+  .process-intro {
+    font-size: 16px; font-weight: 300;
+    color: var(--grey); line-height: 1.8;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .process-steps::after {
+    content: '';
+    position: absolute; top: 32px; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(200,184,154,0.2), rgba(200,184,154,0.2), transparent);
+  }
+
+  .process-step {
+    padding: 0 24px 0 0;
+    position: relative; z-index: 2;
+  }
+
+  .step-dot {
+    width: 64px; height: 64px;
+    border: 1px solid rgba(200,184,154,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 32px;
+    background: var(--ink);
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .process-step:hover .step-dot {
+    border-color: var(--rust);
+    background: rgba(184,75,42,0.08);
+  }
+
+  .step-dot span {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em;
+    color: var(--dust);
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400;
+    color: var(--paper);
+    margin-bottom: 12px;
+  }
+
+  .step-body {
+    font-size: 13px; font-weight: 300;
+    color: var(--grey); line-height: 1.7;
+  }
+
+  /* ── WORK SHOWCASE ── */
+  #work {
+    background: var(--charcoal);
+  }
+
+  .work-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 64px;
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 2px;
+  }
+
+  .work-item {
+    position: relative;
+    overflow: hidden;
+    background: #1a1715;
+    cursor: pointer;
+  }
+  .work-item:nth-child(1) { grid-row: span 2; aspect-ratio: 3/4; }
+  .work-item:nth-child(2), .work-item:nth-child(3) { aspect-ratio: 16/9; }
+
+  .work-visual {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .work-item:hover .work-visual { transform: scale(1.04); }
+
+  .work-visual-bg {
+    position: absolute; inset: 0;
+    transition: opacity 0.4s ease;
+  }
+  .work-item:nth-child(1) .work-visual-bg {
+    background:
+      radial-gradient(ellipse at 30% 40%, rgba(184,75,42,0.3) 0%, transparent 50%),
+      linear-gradient(180deg, rgba(14,13,11,0) 40%, rgba(14,13,11,0.8) 100%);
+  }
+  .work-item:nth-child(2) .work-visual-bg {
+    background:
+      radial-gradient(ellipse at 70% 50%, rgba(200,184,154,0.15) 0%, transparent 60%),
+      linear-gradient(180deg, rgba(14,13,11,0) 40%, rgba(14,13,11,0.8) 100%);
+  }
+  .work-item:nth-child(3) .work-visual-bg {
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(42,37,32,0.8) 0%, rgba(14,13,11,0.4) 100%),
+      linear-gradient(180deg, rgba(14,13,11,0) 40%, rgba(14,13,11,0.8) 100%);
+  }
+
+  .work-glyph {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 180px; font-weight: 300;
+    color: rgba(200,184,154,0.05);
+    line-height: 1;
+    user-select: none;
+    transition: color 0.4s ease;
+  }
+  .work-item:hover .work-glyph { color: rgba(200,184,154,0.08); }
+
+  .work-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 32px;
+    background: linear-gradient(to top, rgba(14,13,11,0.9) 0%, transparent 100%);
+    transform: translateY(8px); opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+  .work-item:hover .work-info { transform: translateY(0); opacity: 1; }
+
+  .work-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400;
+    color: var(--paper); margin-bottom: 6px;
+  }
+  .work-category {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--rust);
+  }
+
+  /* ── RETAINER OFFER ── */
+  #retainer {
+    background: var(--ink);
+    position: relative; overflow: hidden;
+  }
+
+  .retainer-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 50%, rgba(184,75,42,0.07) 0%, transparent 70%);
+  }
+
+  .retainer-inner {
+    position: relative; z-index: 2;
+    max-width: 900px; margin: 0 auto;
+    text-align: center;
+  }
+
+  .retainer-inner .section-label {
+    justify-content: center;
+  }
+  .retainer-inner .section-label::before { display: none; }
+
+  .retainer-inner .section-title { margin-bottom: 24px; }
+
+  .retainer-body {
+    font-size: 17px; font-weight: 300;
+    color: var(--grey); line-height: 1.8;
+    margin-bottom: 64px;
+  }
+
+  .retainer-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-bottom: 64px;
+    background: rgba(200,184,154,0.08);
+  }
+
+  .retainer-card {
+    background: var(--ink);
+    padding: 40px 32px;
+    text-align: left;
+    position: relative;
+    transition: background 0.3s ease;
+  }
+  .retainer-card.featured {
+    background: var(--charcoal);
+  }
+  .retainer-card.featured::before {
+    content: 'Most Popular';
+    position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--rust); color: var(--paper);
+    padding: 4px 16px;
+    white-space: nowrap;
+  }
+
+  .retainer-tier {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--rust);
+    margin-bottom: 16px;
+  }
+
+  .retainer-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px; font-weight: 300;
+    color: var(--paper); line-height: 1;
+    margin-bottom: 8px;
+  }
+  .retainer-price sup {
+    font-size: 24px; vertical-align: super;
+  }
+  .retainer-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    color: var(--grey); margin-bottom: 32px;
+  }
+
+  .retainer-features {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 12px;
+    margin-bottom: 40px;
+  }
+  .retainer-features li {
+    font-size: 13px; font-weight: 300;
+    color: var(--dust); line-height: 1.5;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .retainer-features li::before {
+    content: '—'; color: var(--rust);
+    flex-shrink: 0; margin-top: 0;
+  }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--charcoal);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+  }
+
+  .contact-info p {
+    font-size: 16px; font-weight: 300;
+    color: var(--grey); line-height: 1.8;
+    margin-bottom: 48px;
+  }
+
+  .contact-details {
+    display: flex; flex-direction: column; gap: 24px;
+  }
+
+  .contact-detail {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .contact-detail-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--rust);
+  }
+  .contact-detail-value {
+    font-size: 16px; font-weight: 300;
+    color: var(--paper);
+  }
+
+  .contact-form {
+    display: flex; flex-direction: column; gap: 24px;
+  }
+
+  .form-group {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+
+  .form-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--dust);
+  }
+
+  .form-input, .form-textarea, .form-select {
+    background: rgba(200,184,154,0.04);
+    border: 1px solid rgba(200,184,154,0.12);
+    color: var(--paper);
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 300;
+    transition: border-color 0.3s ease, background 0.3s ease;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--rust);
+    background: rgba(184,75,42,0.04);
+  }
+  .form-input::placeholder, .form-textarea::placeholder {
+    color: rgba(200,184,154,0.3);
+  }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-select { cursor: pointer; }
+  .form-select option { background: var(--charcoal); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .form-submit {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--rust); color: var(--paper);
+    border: none; padding: 16px 36px;
+    cursor: pointer; align-self: flex-start;
+    transition: background 0.3s ease, transform 0.2s ease;
+    position: relative; overflow: hidden;
+  }
+  .form-submit:hover { background: #9a3d22; transform: translateY(-2px); }
+  .form-submit:focus-visible { outline: 2px solid var(--rust); outline-offset: 3px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    padding: 48px;
+    border-top: 1px solid rgba(200,184,154,0.08);
+  }
+
+  .footer-inner {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--paper);
+  }
+  .footer-logo span { color: var(--rust); }
+
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    color: var(--grey);
+  }
+
+  .footer-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+  .footer-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--grey);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .footer-links a:hover { color: var(--dust); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(100%); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    #about { grid-template-columns: 1fr; gap: 48px; }
+    .about-visual { aspect-ratio: 16/7; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 48px; }
+    .process-steps::after { display: none; }
+    .work-grid { grid-template-columns: 1fr; }
+    .work-item:nth-child(1) { grid-row: auto; aspect-ratio: 4/3; }
+    .retainer-cards { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    #hero { padding: 0 24px; }
+    footer { padding: 32px 24px; }
+    .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
+    .process-header { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr; }
+    .work-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero-bottom { flex-direction: column; gap: 24px; align-items: flex-start; }
+    .retainer-inner { text-align: left; }
+    .retainer-inner .section-label { justify-content: flex-start; }
+    .retainer-inner .section-label::before { display: block; }
+    .retainer-card.featured::before { left: 24px; transform: none; }
+  }
+
+  /* focus accessibility */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--rust);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="Nomad Studio home">Nomad<span>.</span>Studio</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#retainer">Retainer</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Start a Project</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero" role="banner">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Cairo · MENA · Global</p>
+
+    <h1 class="hero-headline">
+      <div class="line"><span>Premium</span></div>
+      <div class="line"><span><em>CGI & AI</em></span></div>
+      <div class="line"><span>Visuals<span class="accent">.</span></span></div>
+    </h1>
+
+    <p class="hero-sub">
+      A surrealist visual studio crafting cinematic CGI and AI-generated imagery for forward-thinking brands across the MENA region and beyond.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#work" class="btn-primary">View Work</a>
+      <a href="#retainer" class="btn-secondary">
+        Monthly Retainer
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-stat">
+      <div class="num">8+</div>
+      <div class="label">Years Experience</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">120+</div>
+      <div class="label">Projects Delivered</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">40+</div>
+      <div class="label">Brand Clients</div>
+    </div>
+    <div class="hero-scroll" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section" aria-hidden="true">
+  <div class="marquee-track" id="marquee">
+    <div class="marquee-item">CGI Production <span class="dot"></span></div>
+    <div class="marquee-item">AI Visual Direction <span class="dot"></span></div>
+    <div class="marquee-item">Motion Design <span class="dot"></span></div>
+    <div class="marquee-item">3D Rendering <span class="dot"></span></div>
+    <div class="marquee-item">Brand Visuals <span class="dot"></span></div>
+    <div class="marquee-item">Surrealist Composition <span class="dot"></span></div>
+    <div class="marquee-item">Product Visualization <span class="dot"></span></div>
+    <div class="marquee-item">MENA Market <span class="dot"></span></div>
+    <div class="marquee-item">CGI Production <span class="dot"></span></div>
+    <div class="marquee-item">AI Visual Direction <span class="dot"></span></div>
+    <div class="marquee-item">Motion Design <span class="dot"></span></div>
+    <div class="marquee-item">3D Rendering <span class="dot"></span></div>
+    <div class="marquee-item">Brand Visuals <span class="dot"></span></div>
+    <div class="marquee-item">Surrealist Composition <span class="dot"></span></div>
+    <div class="marquee-item">Product Visualization <span class="dot"></span></div>
+    <div class="marquee-item">MENA Market <span class="dot"></span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual reveal" aria-hidden="true">
+    <div class="about-visual-accent"></div>
+    <div class="about-visual-inner">
+      <div class="about-visual-text">N</div>
+    </div>
+    <div class="about-visual-label">Est. Cairo, Egypt</div>
+  </div>
+
+  <div class="about-text">
+    <p class="section-label">About the Studio</p>
+    <h2 class="section-title reveal">Where <em>surrealism</em> meets precision craft</h2>
+    <p class="about-body reveal">
+      Nomad Studio is a premium CGI and AI visual production house based in Cairo, built for brands that refuse to be ordinary. We operate at the intersection of 3D artistry, motion design, and AI-generated imagery — producing work that commands attention.
+    </p>
+    <p class="about-body reveal">
+      Founded by a visual director with 8 years of experience working across fashion, luxury, and technology brands, the studio channels a distinctly surrealist visual language over minimal structural restraint.
+    </p>
+    <ul class="about-list reveal" aria-label="Studio specialties">
+      <li>3D generalist work across Blender — modelling, shading, rendering</li>
+      <li>AI visual direction with MidJourney, Kling, and proprietary pipelines</li>
+      <li>Motion graphics and cinematic brand storytelling</li>
+      <li>Monthly retainer model — your studio, always on</li>
+    </ul>
+    <a href="#contact" class="btn-primary reveal">Work With Us</a>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div>
+    <p class="section-label reveal">What We Create</p>
+    <h2 class="section-title reveal">Studio <em>services</em></h2>
+  </div>
+
+  <div class="services-grid" role="list">
+    <article class="service-card reveal" role="listitem">
+      <div class="service-num" aria-hidden="true">01</div>
+      <h3 class="service-name">CGI & 3D Production</h3>
+      <p class="service-desc">
+        Photorealistic product visualizations, architectural renders, and conceptual 3D worlds built in Blender. From still frames to full animations — every detail considered.
+      </p>
+      <div class="service-tags" aria-label="Tools">
+        <span class="service-tag">Blender</span>
+        <span class="service-tag">Product Viz</span>
+        <span class="service-tag">Animation</span>
+        <span class="service-tag">Rendering</span>
+      </div>
+    </article>
+
+    <article class="service-card reveal" role="listitem">
+      <div class="service-num" aria-hidden="true">02</div>
+      <h3 class="service-name">AI Visual Direction</h3>
+      <p class="service-desc">
+        Cinematic AI-generated campaigns directed with precision. We don't prompt and pray — we art-direct AI like a film set. Consistent characters, brand-true aesthetics, campaign-ready output.
+      </p>
+      <div class="service-tags" aria-label="Tools">
+        <span class="service-tag">MidJourney</span>
+        <span class="service-tag">Kling</span>
+        <span class="service-tag">Campaigns</span>
+        <span class="service-tag">Video</span>
+      </div>
+    </article>
+
+    <article class="service-card reveal" role="listitem">
+      <div class="service-num" aria-hidden="true">03</div>
+      <h3 class="service-name">Motion Design</h3>
+      <p class="service-desc">
+        Brand motion — from logo animations and UI motion to full commercial spots. Kinetic typography, motion graphics, and visual storytelling at the level of a boutique production house.
+      </p>
+      <div class="service-tags" aria-label="Tools">
+        <span class="service-tag">After Effects</span>
+        <span class="service-tag">Resolve</span>
+        <span class="service-tag">Brand Motion</span>
+      </div>
+    </article>
+
+    <article class="service-card reveal" role="listitem">
+      <div class="service-num" aria-hidden="true">04</div>
+      <h3 class="service-name">Brand Visual Systems</h3>
+      <p class="service-desc">
+        A complete visual identity beyond the logo — the CGI language of your brand. What does your brand look like in 3D space? We answer that question and systematize it.
+      </p>
+      <div class="service-tags" aria-label="Tools">
+        <span class="service-tag">Identity</span>
+        <span class="service-tag">Style Guides</span>
+        <span class="service-tag">Art Direction</span>
+      </div>
+    </article>
+
+    <article class="service-card reveal" role="listitem">
+      <div class="service-num" aria-hidden="true">05</div>
+      <h3 class="service-name">Social & Campaign Content</h3>
+      <p class="service-desc">
+        High-volume CGI and AI content built for modern social — reels, statics, carousels. Retainer clients get a steady pipeline of on-brand, thumb-stopping visuals every month.
+      </p>
+      <div class="service-tags" aria-label="Tools">
+        <span class="service-tag">Reels</span>
+        <span class="service-tag">Statics</span>
+        <span class="service-tag">Campaigns</span>
+      </div>
+    </article>
+
+    <article class="service-card reveal" role="listitem">
+      <div class="service-num" aria-hidden="true">06</div>
+      <h3 class="service-name">Custom AI Pipelines</h3>
+      <p class="service-desc">
+        For brands that need AI visual production at scale — we build and run the pipeline. Trained on your brand DNA, producing on-brand AI output that actually looks like you.
+      </p>
+      <div class="service-tags" aria-label="Tools">
+        <span class="service-tag">LoRA</span>
+        <span class="service-tag">Brand Training</span>
+        <span class="service-tag">Automation</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-header">
+    <div>
+      <p class="section-label reveal">How We Work</p>
+      <h2 class="section-title reveal">The <em>studio</em> process</h2>
+    </div>
+    <p class="process-intro reveal">
+      Nomad Studio runs like a boutique production house — tight, focused, and obsessively quality-driven. No junior handoffs, no bloated agency overhead. You work directly with the creative director.
+    </p>
+  </div>
+
+  <div class="process-steps" role="list">
+    <div class="process-step reveal" role="listitem">
+      <div class="step-dot" aria-hidden="true"><span>01</span></div>
+      <h3 class="step-title">Discovery</h3>
+      <p class="step-body">Brand deep-dive. We learn your visual DNA, your market positioning, and what "premium" means specifically to your audience.</p>
+    </div>
+    <div class="process-step reveal" role="listitem">
+      <div class="step-dot" aria-hidden="true"><span>02</span></div>
+      <h3 class="step-title">Direction</h3>
+      <p class="step-body">Moodboards, style references, and creative brief. You approve the visual language before a single render is started.</p>
+    </div>
+    <div class="process-step reveal" role="listitem">
+      <div class="step-dot" aria-hidden="true"><span>03</span></div>
+      <h3 class="step-title">Production</h3>
+      <p class="step-body">CGI, AI, motion — executed at studio standard. Two rounds of revision built in. Delivery in production-ready formats.</p>
+    </div>
+    <div class="process-step reveal" role="listitem">
+      <div class="step-dot" aria-hidden="true"><span>04</span></div>
+      <h3 class="step-title">Delivery</h3>
+      <p class="step-body">Organized asset handoff, usage guide, and ongoing retainer support. Your visual library grows month after month.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="work-header">
+    <div>
+      <p class="section-label reveal">Selected Projects</p>
+      <h2 class="section-title reveal">Recent <em>work</em></h2>
+    </div>
+    <a href="#contact" class="btn-secondary reveal">
+      See Full Portfolio
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="work-grid" role="list">
+    <article class="work-item reveal" role="listitem" tabindex="0" aria-label="Luxury Brand Campaign project">
+      <div class="work-visual">
+        <div class="work-visual-bg"></div>
+        <div class="work-glyph" aria-hidden="true">ع</div>
+      </div>
+      <div class="work-info">
+        <div class="work-category">CGI Campaign</div>
+        <div class="work-title">Luxury Brand — Product World</div>
+      </div>
+    </article>
+
+    <article class="work-item reveal" role="listitem" tabindex="0" aria-label="Fashion Brand AI Campaign project">
+      <div class="work-visual">
+        <div class="work-visual-bg"></div>
+        <div class="work-glyph" aria-hidden="true">∞</div>
+      </div>
+      <div class="work-info">
+        <div class="work-category">AI Direction</div>
+        <div class="work-title">Fashion Brand — AI Campaign</div>
+      </div>
+    </article>
+
+    <article class="work-item reveal" role="listitem" tabindex="0" aria-label="SaaS Platform Motion Identity project">
+      <div class="work-visual">
+        <div class="work-visual-bg"></div>
+        <div class="work-glyph" aria-hidden="true">◈</div>
+      </div>
+      <div class="work-info">
+        <div class="work-category">Motion Design</div>
+        <div class="work-title">SaaS Platform — Motion Identity</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- RETAINER -->
+<section id="retainer">
+  <div class="retainer-bg" aria-hidden="true"></div>
+  <div class="retainer-inner">
+    <p class="section-label">Monthly Retainer</p>
+    <h2 class="section-title reveal">Your studio,<br><em>always on</em></h2>
+    <p class="retainer-body reveal">
+      Stop treating visuals as a one-off. Brands on retainer get consistent, premium CGI and AI output every month — at a fraction of the cost of an in-house team.
+    </p>
+
+    <div class="retainer-cards reveal" role="list">
+      <div class="retainer-card" role="listitem">
+        <div class="retainer-tier">Starter</div>
+        <div class="retainer-price"><sup>$</sup>1,200</div>
+        <div class="retainer-period">per month</div>
+        <ul class="retainer-features" aria-label="Starter plan features">
+          <li>8 CGI or AI visuals/month</li>
+          <li>1 short motion piece (&lt;15s)</li>
+          <li>2 revision rounds per asset</li>
+          <li>Dedicated Slack channel</li>
+          <li>Monthly strategy call</li>
+        </ul>
+        <a href="#contact" class="btn-primary" style="width:100%; text-align:center; display:block;">Get Started</a>
+      </div>
+
+      <div class="retainer-card featured" role="listitem">
+        <div class="retainer-tier">Studio</div>
+        <div class="retainer-price"><sup>$</sup>2,800</div>
+        <div class="retainer-period">per month</div>
+        <ul class="retainer-features" aria-label="Studio plan features">
+          <li>20 CGI or AI visuals/month</li>
+          <li>3 motion pieces (up to 30s each)</li>
+          <li>Unlimited revisions</li>
+          <li>Priority turnaround (48h)</li>
+          <li>Brand visual system included</li>
+          <li>Bi-weekly strategy sessions</li>
+        </ul>
+        <a href="#contact" class="btn-primary" style="width:100%; text-align:center; display:block;">Get Started</a>
+      </div>
+
+      <div class="retainer-card" role="listitem">
+        <div class="retainer-tier">Enterprise</div>
+        <div class="retainer-price">Custom</div>
+        <div class="retainer-period">tailored scope</div>
+        <ul class="retainer-features" aria-label="Enterprise plan features">
+          <li>Unlimited visual production</li>
+          <li>Full campaign direction</li>
+          <li>Custom AI pipeline build</li>
+          <li>On-site availability</li>
+          <li>Embedded creative director</li>
+          <li>White-label option</li>
+        </ul>
+        <a href="#contact" class="btn-primary" style="width:100%; text-align:center; display:block;">Let's Talk</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p class="section-label reveal">Get In Touch</p>
+      <h2 class="section-title reveal">Start something<br><em>remarkable</em></h2>
+      <p class="reveal">
+        Whether you're a brand looking for a visual partner or an agency that needs studio-level CGI production, we'd love to hear what you're building.
+      </p>
+
+      <div class="contact-details reveal">
+        <div class="contact-detail">
+          <span class="contact-detail-label">Based in</span>
+          <span class="contact-detail-value">Cairo, Egypt — working globally</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Response time</span>
+          <span class="contact-detail-value">Within 24 hours</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Availability</span>
+          <span class="contact-detail-value">Open to new retainers — Q3 2025</span>
+        </div>
+      </div>
+    </div>
+
+    <form class="contact-form reveal" novalidate aria-label="Contact form">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="name">Name</label>
+          <input class="form-input" type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="company">Company</label>
+          <input class="form-input" type="text" id="company" name="company" placeholder="Brand / Agency" autocomplete="organization">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" type="email" id="email" name="email" placeholder="hello@yourbrand.com" autocomplete="email" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="service">Service Interest</label>
+        <select class="form-select" id="service" name="service">
+          <option value="">Select a service</option>
+          <option value="cgi">CGI & 3D Production</option>
+          <option value="ai">AI Visual Direction</option>
+          <option value="motion">Motion Design</option>
+          <option value="brand">Brand Visual System</option>
+          <option value="retainer">Monthly Retainer</option>
+          <option value="custom">Custom / Enterprise</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message">Brief</label>
+        <textarea class="form-textarea" id="message" name="message" placeholder="Tell us about the project — scope, timeline, budget range..."></textarea>
+      </div>
+
+      <button type="submit" class="form-submit">Send Brief →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">Nomad<span>.</span>Studio</span>
+    <ul class="footer-links" aria-label="Footer navigation">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 Nomad Studio. Cairo, Egypt.</span>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button, .work-item, .service-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '16px'; cursor.style.height = '16px';
+      ring.style.width = '56px'; ring.style.height = '56px';
+      ring.style.opacity = '0.6';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '8px'; cursor.style.height = '8px';
+      ring.style.width = '36px'; ring.style.height = '36px';
+      ring.style.opacity = '1';
+    });
+  });
+
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 80);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => io.observe(el));
+
+  // Stagger siblings
+  document.querySelectorAll('.services-grid, .process-steps, .retainer-cards').forEach(parent => {
+    Array.from(parent.children).forEach((child, i) => {
+      child.style.transitionDelay = (i * 80) + 'ms';
+    });
+  });
+
+  // Keyboard nav for work items
+  document.querySelectorAll('.work-item').forEach(item => {
+    item.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const info = item.querySelector('.work-info');
+        info.style.opacity = info.style.opacity === '1' ? '0' : '1';
+        info.style.transform = info.style.transform === 'translateY(0px)' ? 'translateY(8px)' : 'translateY(0px)';
+      }
+    });
+  });
+
+  // Form submit
+  document.querySelector('.contact-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = 'Sent ✓';
+    btn.style.background = '#2a6b4a';
+    setTimeout(() => {
+      btn.textContent = 'Send Brief →';
+      btn.style.background = '';
+    }, 3000);
+  });
+
+  // Marquee duplicate
+  const track = document.getElementById('marquee');
+  track.innerHTML += track.innerHTML;
+</script>
+</body>
+</html>
