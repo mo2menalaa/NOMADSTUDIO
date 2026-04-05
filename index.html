@@ -1252,7 +1252,7 @@
     display: none;
     position: fixed; inset: 0;
     background: var(--ink);
-    z-index: 150;
+    z-index: 9996;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.35s ease;
@@ -1287,6 +1287,19 @@
     flex-direction: column;
     width: 100%;
   }
+  .mobile-menu-close {
+    position: absolute;
+    top: 24px; right: 24px;
+    background: none; border: none;
+    color: var(--ash);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px;
+    line-height: 1;
+    z-index: 9999;
+    transition: color 0.2s ease;
+  }
+  .mobile-menu-close:hover { color: var(--cream); }
   .mobile-menu-cta { align-self: flex-start; margin-top: auto; }
 
   @media (max-width: 768px) {
@@ -1527,6 +1540,7 @@
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <div class="mobile-menu-inner">
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">✕</button>
     <nav aria-label="Mobile navigation">
       <a href="#about" class="mobile-link">About</a>
       <a href="#services" class="mobile-link">Services</a>
@@ -2391,6 +2405,7 @@
   // ── MOBILE MENU ──
   const burger = document.getElementById('navBurger');
   const mobileMenu = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileMenuClose');
   const mobileLinks = document.querySelectorAll('.mobile-link, .mobile-menu-cta');
 
   function toggleMenu(open) {
@@ -2401,7 +2416,8 @@
     document.body.style.overflow = open ? 'hidden' : '';
   }
 
-  burger.addEventListener('click', () => toggleMenu(!burger.classList.contains('open')));
+  burger.addEventListener('click', () => toggleMenu(true));
+  mobileClose.addEventListener('click', () => toggleMenu(false));
   mobileLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
 
 
