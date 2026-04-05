@@ -1224,6 +1224,71 @@
     to   { transform: translateX(-50%); }
   }
 
+  /* ── MOBILE MENU ── */
+  .desktop-only { display: inline-block; }
+
+  .nav-burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px; height: 36px;
+    background: none; border: none;
+    cursor: pointer; padding: 4px;
+    z-index: 200;
+  }
+  .nav-burger span {
+    display: block;
+    width: 22px; height: 1px;
+    background: var(--cream);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+  .nav-burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .nav-burger.open span:nth-child(2) { opacity: 0; }
+  .nav-burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed; inset: 0;
+    background: var(--ink);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .mobile-menu.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .mobile-menu-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 40px 60px;
+    height: 100%;
+    gap: 48px;
+  }
+  .mobile-link {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 10vw, 52px);
+    font-weight: 200;
+    color: var(--ash);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    transition: color 0.2s ease;
+    display: block;
+  }
+  .mobile-link:hover { color: var(--cream); }
+  .mobile-menu-cta { align-self: flex-start; margin-top: 8px; }
+
+  @media (max-width: 768px) {
+    .desktop-only { display: none; }
+    .nav-burger { display: flex; }
+    .mobile-menu { display: block; }
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 1024px) {
     #about { grid-template-columns: 1fr; gap: 48px; }
@@ -1238,22 +1303,93 @@
   }
 
   @media (max-width: 768px) {
+    /* ── NAV ── */
     nav { padding: 20px 24px; }
     nav.scrolled { padding: 14px 24px; }
     .nav-links { display: none; }
-    section { padding: 80px 24px; }
+    .nav-cta { padding: 8px 16px; font-size: 9px; }
+
+    /* ── HERO ── */
     #hero { padding: 0 24px; }
-    footer { padding: 32px 24px; }
-    .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
-    .process-header { grid-template-columns: 1fr; }
-    .process-steps { grid-template-columns: 1fr; }
-    .work-header { flex-direction: column; align-items: flex-start; gap: 24px; }
-    .form-row { grid-template-columns: 1fr; }
-    .hero-bottom { flex-direction: column; gap: 24px; align-items: flex-start; }
+    .hero-content { padding-top: 100px; }
+    .hero-headline { font-size: clamp(44px, 13vw, 72px); margin-bottom: 28px; }
+    .hero-sub { font-size: 15px; max-width: 100%; margin-bottom: 40px; }
+    .hero-actions { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .hero-bottom {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 20px 32px;
+      align-items: flex-start;
+      padding-bottom: 36px;
+    }
+    .hero-stat .num { font-size: 32px; }
+    .hero-scroll { display: none; }
+
+    /* ── SECTIONS ── */
+    section { padding: 80px 24px; }
+    .section-title { font-size: clamp(32px, 9vw, 48px); }
+
+    /* ── ABOUT ── */
+    .about-visual { display: none; }
+
+    /* ── SERVICES ── */
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 36px 28px; }
+    .service-num { font-size: 48px; }
+
+    /* ── PROCESS ── */
+    .process-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+    .process-steps { grid-template-columns: 1fr; gap: 40px; }
+    .process-steps::after { display: none; }
+    .step-dot { width: 48px; height: 48px; margin-bottom: 20px; }
+
+    /* ── WORK ── */
+    .work-grid { grid-template-columns: 1fr; }
+    .work-item:nth-child(1) { grid-row: auto; aspect-ratio: 4/3; }
+    .work-item:nth-child(2), .work-item:nth-child(3) { aspect-ratio: 4/3; }
+    .work-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .work-info { transform: translateY(0); opacity: 1; }
+
+    /* ── RETAINER ── */
+    .retainer-cards { grid-template-columns: 1fr; }
     .retainer-inner { text-align: left; }
     .retainer-inner .section-label { justify-content: flex-start; }
     .retainer-inner .section-label::before { display: block; }
     .retainer-card.featured::before { left: 24px; transform: none; }
+    .retainer-body { margin-bottom: 40px; }
+
+    /* ── CONTACT ── */
+    .contact-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .form-input, .form-textarea, .form-select { font-size: 16px; } /* prevents iOS zoom */
+
+    /* ── FOOTER ── */
+    footer { padding: 32px 24px; }
+    .footer-inner { flex-direction: column; gap: 20px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 16px 24px; }
+
+    /* ── TRUSTED BY ── */
+    .trusted-header { margin-bottom: 20px; }
+    .trusted-name { font-size: 10px; }
+    .trusted-item { padding: 0 24px; }
+
+    /* ── CURSOR — hide on touch ── */
+    .cursor, .cursor-ring { display: none; }
+
+    /* ── DISABLE HEAVY EFFECTS ON MOBILE ── */
+    #particleCanvas { display: none; }
+    .hero-microtext { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-headline { font-size: clamp(38px, 11vw, 56px); }
+    .hero-eyebrow { font-size: 9px; }
+    .btn-primary { font-size: 9px; padding: 14px 28px; width: 100%; text-align: center; }
+    .section-title { font-size: clamp(28px, 8vw, 40px); }
+    .service-card { padding: 28px 20px; }
+    .retainer-card { padding: 32px 24px; }
+    .hero-bottom { gap: 16px 24px; }
+    .hero-stat .num { font-size: 28px; }
   }
 
   /* focus accessibility */
@@ -1376,8 +1512,25 @@
     <li><a href="#retainer">Retainer</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Start a Project</a>
+  <a href="#contact" class="nav-cta desktop-only">Start a Project</a>
+  <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-inner">
+    <nav aria-label="Mobile navigation">
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#services" class="mobile-link">Services</a>
+      <a href="#work" class="mobile-link">Work</a>
+      <a href="#retainer" class="mobile-link">Retainer</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+    </nav>
+    <a href="#contact" class="btn-primary mobile-menu-cta">Start a Project</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section id="hero" role="banner">
@@ -2229,7 +2382,23 @@
     ring.addEventListener('animationend', () => ring.remove());
   });
 
-  // ── MAGNETIC BUTTONS ──
+  // ── MOBILE MENU ──
+  const burger = document.getElementById('navBurger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileLinks = document.querySelectorAll('.mobile-link, .mobile-menu-cta');
+
+  function toggleMenu(open) {
+    burger.classList.toggle('open', open);
+    mobileMenu.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    mobileMenu.setAttribute('aria-hidden', !open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  burger.addEventListener('click', () => toggleMenu(!burger.classList.contains('open')));
+  mobileLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+
+
   document.querySelectorAll('.btn-primary, .nav-cta').forEach(btn => {
     btn.addEventListener('mousemove', e => {
       const rect = btn.getBoundingClientRect();
