@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!-- Primary SEO -->
+  <title>NOMAD STUDIO — Build brands that move.</title>
+  <meta name="description" content="Director-led creative production at the intersection of human vision and AI execution. AI photo shoots, brand identity, campaign visuals & creative direction. Cairo · GCC · Everywhere.">
+  <meta name="keywords" content="NOMAD Studio, AI creative production, brand identity, campaign visuals, AI photo shoots, creative direction, advertising, Cairo, GCC, UAE, Egypt">
+  <meta name="author" content="Adel — NOMAD STUDIO">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0A0907">
+  <link rel="canonical" href="https://nomad.studio/">
+
+  <!-- Open Graph (social sharing) -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://nomad.studio/">
+  <meta property="og:site_name"   content="NOMAD STUDIO">
+  <meta property="og:title"       content="NOMAD STUDIO — Build brands that move.">
+  <meta property="og:description" content="Director-led creative production at the intersection of human vision and AI execution. No middlemen. No markup. Just output that looks like it cost 10×.">
+  <meta property="og:image"       content="https://nomad.studio/assets/works/red-silhouette.png">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale"      content="en_US">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:site"        content="@thenomadsvisuals">
+  <meta name="twitter:title"       content="NOMAD STUDIO — Build brands that move.">
+  <meta name="twitter:description" content="Director-led creative production. AI-powered. Human-directed. No middlemen.">
+  <meta name="twitter:image"       content="https://nomad.studio/assets/works/red-silhouette.png">
+
+  <!-- Schema.org structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeAgency",
+    "name": "NOMAD STUDIO",
+    "url": "https://nomad.studio",
+    "logo": "https://nomad.studio/assets/logo.jpeg",
+    "description": "Director-led creative production at the intersection of human vision and AI execution.",
+    "founder": { "@type": "Person", "name": "Adel" },
+    "areaServed": ["Cairo", "GCC", "UAE", "Egypt"],
+    "sameAs": ["https://instagram.com/thenomadsvisuals"],
+    "contactPoint": { "@type": "ContactPoint", "email": "hello@nomad.studio", "contactType": "General Inquiry" }
+  }
+  </script>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ── LOADER ──────────────────────────────────────── -->
+  <div class="loader" id="loader">
+    <div class="loader-logo">NOMAD</div>
+    <div class="loader-bar"><div class="loader-bar-fill" id="loaderBarFill"></div></div>
+  </div>
+
+  <!-- ── HEADER ─────────────────────────────────────── -->
+  <header class="header" id="header">
+    <div class="header-grid">
+
+      <a href="index.html" class="header-logo" aria-label="Nomad Studio — Home">NOMAD</a>
+
+      <nav class="header-nav">
+        <a href="#works"    class="hlink shuffle">Works</a>
+        <a href="#identity" class="hlink shuffle">About</a>
+      </nav>
+
+      <div class="header-contact">
+        <a href="https://instagram.com/thenomadsvisuals" class="hlink shuffle" target="_blank" rel="noopener">@thenomadsvisuals</a>
+        <a href="mailto:hello@nomad.studio"           class="hlink shuffle">hello@nomad.studio</a>
+      </div>
+
+      <div class="header-meta">
+        <span>AI-powered studio</span>
+        <span>Cairo · GCC · Everywhere</span>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button class="header-burger" id="burger" aria-label="Menu">
+        <span class="burger-label burger-open">:/ Menu</span>
+        <span class="burger-label burger-close">Close</span>
+      </button>
+
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mob-menu" id="mobMenu">
+      <nav class="mob-nav">
+        <a href="#"         class="mob-link">Home</a>
+        <a href="#works"    class="mob-link">Works</a>
+        <a href="#identity" class="mob-link">About</a>
+        <a href="#services" class="mob-link">Services</a>
+      </nav>
+      <div class="mob-footer">
+        <div class="mob-links">
+          <a href="https://instagram.com/thenomadsvisuals" target="_blank" rel="noopener">@thenomadsvisuals</a>
+          <a href="mailto:hello@nomad.studio">hello@nomad.studio</a>
+        </div>
+        <a href="mailto:hello@nomad.studio" class="mob-cta">&gt; Contact us</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── HERO ────────────────────────────────────────── -->
+  <section class="hero">
+    <!-- Three.js particle logo fills the hero background -->
+    <canvas class="hero-canvas" id="heroCanvas"></canvas>
+
+    <div class="hero-bottom">
+      <div class="hero-title-clip">
+        <h1 class="hero-title">
+          <span class="hero-line">Build brands</span>
+          <span class="hero-line hero-line--indent">that <span style="color:var(--terra)">move.</span></span>
+        </h1>
+      </div>
+      <p class="hero-desc">
+        Director-led creative production at the intersection<br>
+        of human vision and AI execution. No middlemen.<br>
+        No markup. Just output that looks like it cost 10×.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── WORKS ─────────────────────────────────────── -->
+  <section class="works-wrap" id="works">
+    <div class="works-scroll" id="worksScroll">
+
+      <div class="works-sticky" id="worksSticky">
+
+        <!-- Three.js fills this -->
+        <canvas class="works-canvas" id="worksCanvas"></canvas>
+
+        <!-- Colour-grade vignette over canvas -->
+        <div class="works-vignette" aria-hidden="true"></div>
+
+        <!-- Top bar -->
+        <div class="works-bar-top">
+          <span class="works-index" id="wIdx">01</span>
+          <span class="works-label-center">
+            <span class="works-sq"></span>Selected works
+          </span>
+          <span class="works-total">/ 06</span>
+        </div>
+
+        <!-- Bottom meta -->
+        <div class="works-bar-bottom">
+          <div class="works-title" id="wTitle">Triple Screen</div>
+          <div class="works-meta">
+            <div class="works-meta-col">
+              <div class="works-meta-label">Client</div>
+              <div class="works-meta-val" id="wClient">Internal</div>
+            </div>
+            <div class="works-meta-col">
+              <div class="works-meta-label">Type</div>
+              <div class="works-meta-val" id="wType">AI Photo Shoot</div>
+            </div>
+            <div class="works-meta-col works-meta-col--date">
+              <div class="works-meta-label">Date</div>
+              <div class="works-meta-val" id="wDate">2025</div>
+            </div>
+          </div>
+        </div>
+
+        <a href="#" class="works-hit" id="wLink" aria-label="View project"></a>
+      </div>
+    </div>
+
+    <div class="works-cta-wrap">
+      <a href="works.html" target="_blank" class="works-cta">
+        <span class="shuffle">See all works</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── IDENTITY ────────────────────────────────────── -->
+  <section class="identity" id="identity">
+    <div class="suptitle">
+      <span class="sup-left"><span class="sq"></span>Who we are</span>
+      <span class="sup-mid">02</span>
+      <span class="sup-right">Camera or Code?</span>
+    </div>
+
+    <div class="identity-copy px-m">
+      <div class="identity-headline">
+        <div class="identity-h-row">
+          <em class="identity-h-em">AI-powered.</em>
+        </div>
+        <div class="identity-h-row identity-h-row--push">
+          Human-directed.
+        </div>
+      </div>
+      <div class="identity-aside">Visual Engineering</div>
+    </div>
+
+    <div class="identity-img-wrap px-m">
+      <div class="identity-img-box">
+        <img src="assets/identity.png" alt="Nomad Studio work" class="identity-img" loading="lazy">
+      </div>
+    </div>
+
+    <div class="identity-body px-m">
+      <p>
+        Nomad Studio is a director-led creative production house at the intersection
+        of human vision and AI execution. We cut the agency markup, the bloated
+        timelines, and the six layers of middlemen that sit between a great idea
+        and a great image.
+      </p>
+      <p>
+        Every output looks like it cost ten times what it did.<br>
+        Every deliverable feels like it came from a team of forty.
+      </p>
+      <blockquote class="identity-quote">
+        "The one in the room wearing all black, saying very little — but when they
+        speak, the entire table turns."
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ────────────────────────────────────── -->
+  <section class="services" id="services">
+    <div class="suptitle px-m">
+      <span class="sup-left"><span class="sq"></span>Expertise</span>
+      <span class="sup-mid">03</span>
+      <span class="sup-right">From vision to screen</span>
+    </div>
+
+    <h2 class="services-headline px-m">
+      WE SHOOT. WE BUILD.<br>WE FINISH.
+    </h2>
+
+    <div class="services-body px-m">
+      <div class="services-list">
+
+        <div class="service-row">
+          <div class="service-name">
+            <span class="shuffle">AI Photo Shoots</span>
+            <span class="service-num">(01)</span>
+          </div>
+          <div class="service-desc">Product, fashion, lifestyle — shot with AI, directed by us.</div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-name">
+            <span class="shuffle">Brand Identity</span>
+            <span class="service-num">(02)</span>
+          </div>
+          <div class="service-desc">Logo, color, type, system. Built to last.</div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-name">
+            <span class="shuffle">Campaign Visuals</span>
+            <span class="service-num">(03)</span>
+          </div>
+          <div class="service-desc">Full campaign — hero images, variants, ad cuts.</div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-name">
+            <span class="shuffle">Creative Direction</span>
+            <span class="service-num">(04)</span>
+          </div>
+          <div class="service-desc">We art-direct your shoot, your agency, your team.</div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-name">
+            <span class="shuffle">3D &amp; Motion</span>
+            <span class="service-num">(05)</span>
+          </div>
+          <div class="service-desc">Blender renders, product 3D, motion graphics.</div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-name">
+            <span class="shuffle">Ad Creatives</span>
+            <span class="service-num">(06)</span>
+          </div>
+          <div class="service-desc">Performance visuals — Meta, TikTok, Google.</div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-name">
+            <span class="shuffle">Content Retainer</span>
+            <span class="service-num">(07)</span>
+          </div>
+          <div class="service-desc">Monthly visual engine — 20–40 images, always on.</div>
+        </div>
+
+      </div>
+
+      <div class="services-visual">
+        <img src="assets/works/red-silhouette.png" alt="" class="services-img" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CLIENTS ───────────────────────────────────────── -->
+  <section class="clients" id="clients">
+    <div class="suptitle px-m">
+      <span class="sup-left"><span class="sq"></span>Trusted by</span>
+      <span class="sup-mid">04</span>
+      <span class="sup-right">Our clients</span>
+    </div>
+
+    <div class="clients-track-wrap" aria-label="Client list">
+      <div class="clients-track">
+        <!-- First copy -->
+        <span class="client-item">Arby's</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Burger King</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Deepal</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">El Ezaby Pharmacies</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Gong Cha Boba</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Hamza Namira</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Al Hilal SC</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Pearl Qatar</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Dinosaur Coffee</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Selected Lines</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">The Scent Library</span><span class="client-sep" aria-hidden="true">■</span>
+        <!-- Duplicate for seamless loop -->
+        <span class="client-item">Arby's</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Burger King</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Deepal</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">El Ezaby Pharmacies</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Gong Cha Boba</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Hamza Namira</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Al Hilal SC</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Pearl Qatar</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Dinosaur Coffee</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">Selected Lines</span><span class="client-sep" aria-hidden="true">■</span>
+        <span class="client-item">The Scent Library</span><span class="client-sep" aria-hidden="true">■</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ──────────────────────────────────────── -->
+  <footer class="footer" id="contact">
+    <canvas class="footer-canvas" id="footerCanvas" aria-hidden="true"></canvas>
+
+    <div class="footer-body px-m">
+      <div class="footer-col">
+        <div class="footer-col-head"><span class="sq"></span>NOMAD STUDIO</div>
+        <div class="footer-addr">Cairo · GCC · Everywhere</div>
+      </div>
+
+      <div class="footer-col">
+        <span class="sq"></span>
+        <div>
+          <div>Get in touch</div>
+          <a href="mailto:hello@nomad.studio" class="footer-email shuffle">hello@nomad.studio</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <span class="sq"></span>
+        <div class="footer-links">
+          <a href="https://instagram.com/thenomadsvisuals" target="_blank" rel="noopener" class="shuffle">@thenomadsvisuals</a>
+          <div class="footer-credit">
+            Adel — Founder &amp; Creative Director
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom px-m">
+      <button class="back-top shuffle" id="backTop">:/ Back to top</button>
+    </div>
+  </footer>
+
+  <!-- ── SCANLINE ─────────────────────────────────────── -->
+  <div class="scanline" aria-hidden="true"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="js/three-scene.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

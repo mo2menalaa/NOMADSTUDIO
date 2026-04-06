@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Works — NOMAD STUDIO</title>
+  <meta name="description" content="Selected works by NOMAD STUDIO — AI photo shoots, brand campaigns, creative direction and 3D motion for brands in Cairo, GCC, and beyond.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0A0907">
+  <link rel="canonical" href="https://nomad.studio/works.html">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://nomad.studio/works.html">
+  <meta property="og:title"       content="Works — NOMAD STUDIO">
+  <meta property="og:description" content="Selected works: AI photo shoots, brand campaigns, creative direction.">
+  <meta property="og:image"       content="https://nomad.studio/assets/works/the-figure.jpg">
+  <meta name="twitter:card"       content="summary_large_image">
+  <meta name="twitter:title"      content="Works — NOMAD STUDIO">
+  <meta name="twitter:image"      content="https://nomad.studio/assets/works/the-figure.jpg">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Gallery page ──────────────────────────── */
+    .gallery-hero {
+      padding: calc(var(--m) * 4) var(--m) var(--m);
+      border-bottom: 1px solid var(--sand-08);
+    }
+    .gallery-hero .suptitle { margin-bottom: 2.4rem; }
+    .gallery-title {
+      font-family: var(--f-head);
+      font-weight: 700;
+      font-size: clamp(4rem, 10vw, 11rem);
+      line-height: .9;
+      letter-spacing: -.3rem;
+      text-transform: uppercase;
+    }
+    .gallery-title em {
+      font-style: italic;
+      color: var(--terra);
+    }
+    .gallery-count {
+      font-family: var(--f-body);
+      color: var(--dust);
+      font-size: 1.3rem;
+      margin-top: 1.6rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--sand-08);
+      border-top: 1px solid var(--sand-08);
+    }
+
+    .gallery-card {
+      background: var(--void);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    .gallery-card:hover .gallery-card-img img {
+      transform: scale(1.04);
+    }
+    .gallery-card:hover .gallery-card-num {
+      color: var(--terra);
+    }
+
+    .gallery-card-img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .7s cubic-bezier(.16,1,.3,1);
+    }
+
+    .gallery-card-body {
+      padding: 2rem 2.4rem 2.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      border-top: 1px solid var(--sand-08);
+    }
+
+    .gallery-card-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .gallery-card-title {
+      font-family: var(--f-head);
+      font-weight: 700;
+      font-size: clamp(1.8rem, 2.4vw, 2.8rem);
+      letter-spacing: -.06rem;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .gallery-card-num {
+      font-family: var(--f-body);
+      font-size: 1.2rem;
+      color: var(--dust);
+      transition: color .2s;
+      flex-shrink: 0;
+    }
+
+    .gallery-card-meta {
+      display: flex;
+      gap: 3.2rem;
+    }
+    .gallery-meta-col { display: flex; flex-direction: column; gap: .3rem; }
+    .gallery-meta-label {
+      font-family: var(--f-body);
+      font-size: 1rem;
+      color: var(--dust);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .gallery-meta-val {
+      font-family: var(--f-body);
+      font-size: 1.3rem;
+      color: var(--stone);
+    }
+
+    /* ── Full-width last card if odd number ─────── */
+    .gallery-card:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+    .gallery-card:last-child:nth-child(odd) .gallery-card-img {
+      aspect-ratio: 16 / 7;
+    }
+
+    @media (max-width: 640px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-card:last-child:nth-child(odd) { grid-column: 1; }
+      .gallery-card:last-child:nth-child(odd) .gallery-card-img { aspect-ratio: 4 / 5; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ─────────────────────────────────────── -->
+  <header class="header" id="header">
+    <div class="header-grid">
+      <a href="index.html" class="header-logo" aria-label="Nomad Studio">NOMAD</a>
+      <nav class="header-nav">
+        <a href="works.html"    class="hlink shuffle">Works</a>
+        <a href="index.html#identity" class="hlink shuffle">About</a>
+      </nav>
+      <div class="header-contact">
+        <a href="https://instagram.com/thenomadsvisuals" class="hlink shuffle" target="_blank" rel="noopener">@thenomadsvisuals</a>
+        <a href="mailto:hello@nomad.studio"           class="hlink shuffle">hello@nomad.studio</a>
+      </div>
+      <div class="header-meta">
+        <span>AI-powered studio</span>
+        <span>Cairo · GCC · Everywhere</span>
+      </div>
+      <button class="header-burger" id="burger" aria-label="Menu">
+        <span class="burger-label burger-open">:/ Menu</span>
+        <span class="burger-label burger-close">Close</span>
+      </button>
+    </div>
+    <div class="mob-menu" id="mobMenu">
+      <nav class="mob-nav">
+        <a href="index.html"  class="mob-link">Home</a>
+        <a href="works.html"  class="mob-link">Works</a>
+        <a href="index.html#identity" class="mob-link">About</a>
+        <a href="index.html#services" class="mob-link">Services</a>
+      </nav>
+      <div class="mob-footer">
+        <div class="mob-links">
+          <a href="https://instagram.com/thenomadsvisuals" target="_blank" rel="noopener">@thenomadsvisuals</a>
+          <a href="mailto:hello@nomad.studio">hello@nomad.studio</a>
+        </div>
+        <a href="mailto:hello@nomad.studio" class="mob-cta">&gt; Contact us</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── GALLERY HERO ───────────────────────────────── -->
+  <section class="gallery-hero">
+    <div class="suptitle">
+      <span class="sup-left"><span class="sq"></span>Archive</span>
+      <span class="sup-mid">01</span>
+      <span class="sup-right">Selected works</span>
+    </div>
+    <h1 class="gallery-title">
+      Selected<br><em>Works.</em>
+    </h1>
+    <p class="gallery-count">06 projects — 2024 / 2025</p>
+  </section>
+
+  <!-- ── GALLERY GRID ───────────────────────────────── -->
+  <section class="gallery-grid">
+
+    <article class="gallery-card">
+      <div class="gallery-card-img">
+        <img src="assets/works/triple-screen.png" alt="Triple Screen" loading="eager">
+      </div>
+      <div class="gallery-card-body">
+        <div class="gallery-card-head">
+          <span class="gallery-card-title shuffle">Triple Screen</span>
+          <span class="gallery-card-num">01</span>
+        </div>
+        <div class="gallery-card-meta">
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Client</span>
+            <span class="gallery-meta-val">Internal</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Type</span>
+            <span class="gallery-meta-val">AI Photo Shoot</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Date</span>
+            <span class="gallery-meta-val">2025</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="gallery-card">
+      <div class="gallery-card-img">
+        <img src="assets/works/the-figure.jpg" alt="The Figure" loading="lazy">
+      </div>
+      <div class="gallery-card-body">
+        <div class="gallery-card-head">
+          <span class="gallery-card-title shuffle">The Figure</span>
+          <span class="gallery-card-num">02</span>
+        </div>
+        <div class="gallery-card-meta">
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Client</span>
+            <span class="gallery-meta-val">Campaign</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Type</span>
+            <span class="gallery-meta-val">Campaign Visual</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Date</span>
+            <span class="gallery-meta-val">2025</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="gallery-card">
+      <div class="gallery-card-img">
+        <img src="assets/works/red-silhouette.png" alt="Red Silhouette" loading="lazy">
+      </div>
+      <div class="gallery-card-body">
+        <div class="gallery-card-head">
+          <span class="gallery-card-title shuffle">Red Silhouette</span>
+          <span class="gallery-card-num">03</span>
+        </div>
+        <div class="gallery-card-meta">
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Client</span>
+            <span class="gallery-meta-val">Brand</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Type</span>
+            <span class="gallery-meta-val">Brand Campaign</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Date</span>
+            <span class="gallery-meta-val">2025</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="gallery-card">
+      <div class="gallery-card-img">
+        <img src="assets/works/grain-study.png" alt="Grain Study" loading="lazy">
+      </div>
+      <div class="gallery-card-body">
+        <div class="gallery-card-head">
+          <span class="gallery-card-title shuffle">Grain Study</span>
+          <span class="gallery-card-num">04</span>
+        </div>
+        <div class="gallery-card-meta">
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Client</span>
+            <span class="gallery-meta-val">Studio</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Type</span>
+            <span class="gallery-meta-val">Creative Direction</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Date</span>
+            <span class="gallery-meta-val">2024</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="gallery-card">
+      <div class="gallery-card-img">
+        <img src="assets/works/urban-scatter.png" alt="Urban Scatter" loading="lazy">
+      </div>
+      <div class="gallery-card-body">
+        <div class="gallery-card-head">
+          <span class="gallery-card-title shuffle">Urban Scatter</span>
+          <span class="gallery-card-num">05</span>
+        </div>
+        <div class="gallery-card-meta">
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Client</span>
+            <span class="gallery-meta-val">Art Space</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Type</span>
+            <span class="gallery-meta-val">Art Direction</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Date</span>
+            <span class="gallery-meta-val">2024</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="gallery-card">
+      <div class="gallery-card-img">
+        <img src="assets/works/particle-series.png" alt="Particle Series" loading="lazy">
+      </div>
+      <div class="gallery-card-body">
+        <div class="gallery-card-head">
+          <span class="gallery-card-title shuffle">Particle Series</span>
+          <span class="gallery-card-num">06</span>
+        </div>
+        <div class="gallery-card-meta">
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Client</span>
+            <span class="gallery-meta-val">Exhibition</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Type</span>
+            <span class="gallery-meta-val">Art Direction</span>
+          </div>
+          <div class="gallery-meta-col">
+            <span class="gallery-meta-label">Date</span>
+            <span class="gallery-meta-val">2024</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- ── FOOTER ──────────────────────────────────────── -->
+  <footer class="footer" id="contact">
+    <canvas class="footer-canvas" id="footerCanvas" aria-hidden="true"></canvas>
+
+    <div class="footer-body px-m">
+      <div class="footer-col">
+        <div class="footer-col-head"><span class="sq"></span>NOMAD STUDIO</div>
+        <div class="footer-addr">Cairo · GCC · Everywhere</div>
+      </div>
+      <div class="footer-col">
+        <span class="sq"></span>
+        <div>
+          <div>Get in touch</div>
+          <a href="mailto:hello@nomad.studio" class="footer-email shuffle">hello@nomad.studio</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <span class="sq"></span>
+        <div class="footer-links">
+          <a href="https://instagram.com/thenomadsvisuals" target="_blank" rel="noopener" class="shuffle">@thenomadsvisuals</a>
+          <div class="footer-credit">Adel — Founder &amp; Creative Director</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom px-m">
+      <a href="index.html" class="back-top shuffle">:/ Back to home</a>
+    </div>
+  </footer>
+
+  <div class="scanline" aria-hidden="true"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="js/three-scene.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
